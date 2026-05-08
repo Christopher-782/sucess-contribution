@@ -1,0 +1,41 @@
+/* Custom Animations & Premium Styles */
+
+.sidebar-gradient {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Glassmorphism for Modals */
+.modal {
+  transition: all 0.3s ease-out;
+}
+
+/* Smooth Button Clicks */
+button {
+  cursor: pointer;
+}
+
+/* Hide scrollbar but allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Premium input focus */
+input:focus {
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Custom Transition for Page Swaps */
+#app {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

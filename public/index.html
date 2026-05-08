@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Success Contribution | Premium Finance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            animation: {
+              "slide-up": "slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+              "fade-in": "fadeIn 0.3s ease-out",
+              "scale-in": "scaleIn 0.2s ease-out",
+              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+            keyframes: {
+              slideUp: {
+                "0%": { transform: "translateY(20px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              scaleIn: {
+                "0%": { transform: "scale(0.95)", opacity: "0" },
+                "100%": { transform: "scale(1)", opacity: "1" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .sidebar-gradient {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+      }
+      .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .glass-dark {
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .card-hover {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      .btn-press:active {
+        transform: scale(0.96);
+      }
+
+      /* Mobile card layout */
+      @media (max-width: 640px) {
+        .mobile-card {
+          display: flex;
+          flex-direction: column;
+          padding: 16px;
+          border-bottom: 1px solid #f1f5f9;
+        }
+        .mobile-card:last-child {
+          border-bottom: none;
+        }
+      }
+
+      /* Toast notification */
+      .toast {
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 200;
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+
+      /* Modal animations */
+      .modal-overlay {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .modal-overlay.active {
+        opacity: 1;
+      }
+      .modal-panel {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .modal-overlay.active .modal-panel {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+
+      /* Bottom sheet for mobile */
+      @media (max-width: 640px) {
+        .bottom-sheet {
+          border-radius: 24px 24px 0 0 !important;
+          margin: 0 !important;
+          max-width: 100% !important;
+          position: fixed !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          top: auto !important;
+        }
+        .bottom-sheet-overlay .modal-panel {
+          transform: translateY(100%);
+        }
+        .bottom-sheet-overlay.active .modal-panel {
+          transform: translateY(0);
+        }
+      }
+
+      /* Shimmer loading */
+      .shimmer {
+        background: linear-gradient(
+          90deg,
+          #f1f5f9 25%,
+          #e2e8f0 50%,
+          #f1f5f9 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      /* Floating action button */
+      .fab {
+        box-shadow: 0 10px 40px -10px rgba(37, 99, 235, 0.5);
+      }
+    </style>
+    <base target="_blank" />
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased">
+    <div id="app"></div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast">
+      <div
+        id="toastContent"
+        class="px-6 py-3 rounded-2xl text-white text-sm font-medium shadow-2xl flex items-center gap-2"
+      >
+        <i id="toastIcon" class="fas"></i>
+        <span id="toastMessage"></span>
+      </div>
+    </div>
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav
+      id="mobile-nav"
+      class="hidden md:hidden fixed bottom-0 left-0 right-0 glass border-t border-slate-200/50 px-2 py-2 flex justify-around items-center z-50"
+    >
+      <button
+        onclick="router.navigate('dashboard')"
+        class="flex flex-col items-center py-1 px-4 rounded-xl transition-all nav-link"
+        id="mob-dash"
+      >
+        <div
+          class="w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+          id="mob-dash-icon"
+        >
+          <i class="fas fa-th-large text-lg"></i>
+        </div>
+        <span class="text-[10px] mt-0.5 font-semibold">Home</span>
+      </button>
+      <button
+        onclick="router.navigate('customers')"
+        class="flex flex-col items-center py-1 px-4 rounded-xl transition-all nav-link"
+        id="mob-cust"
+      >
+        <div
+          class="w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+          id="mob-cust-icon"
+        >
+          <i class="fas fa-users text-lg"></i>
+        </div>
+        <span class="text-[10px] mt-0.5 font-semibold">Users</span>
+      </button>
+      <button
+        onclick="logout()"
+        class="flex flex-col items-center py-1 px-4 rounded-xl transition-all text-slate-400 hover:text-rose-500"
+      >
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center">
+          <i class="fas fa-sign-out-alt text-lg"></i>
+        </div>
+        <span class="text-[10px] mt-0.5 font-semibold">Logout</span>
+      </button>
+    </nav>
+
+    <!-- ADD CUSTOMER MODAL -->
+    <div
+      id="addModal"
+      class="fixed inset-0 z-[100] hidden modal-overlay bottom-sheet-overlay"
+    >
+      <div
+        class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
+        onclick="closeModal('addModal')"
+      ></div>
+      <div
+        class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none"
+      >
+        <div
+          class="bg-white rounded-2xl shadow-2xl w-full max-w-md pointer-events-auto modal-panel bottom-sheet"
+        >
+          <div class="p-6">
+            <!-- Drag handle for mobile -->
+            <div
+              class="sm:hidden w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4"
+            ></div>
+
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200"
+                >
+                  <i class="fas fa-user-plus text-lg"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-slate-800">
+                    Add New Customer
+                  </h3>
+                  <p class="text-xs text-slate-400">
+                    Create a new ledger entry
+                  </p>
+                </div>
+              </div>
+              <button
+                onclick="closeModal('addModal')"
+                class="w-10 h-10 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-400 transition btn-press"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2"
+                  >Full Name</label
+                >
+                <div class="relative">
+                  <i
+                    class="fas fa-user absolute left-4 top-3.5 text-slate-400 text-sm"
+                  ></i>
+                  <input
+                    type="text"
+                    id="newName"
+                    placeholder="e.g. Mama Joy"
+                    class="w-full p-3 pl-11 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition font-medium"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2"
+                  >Initial Balance (₦)</label
+                >
+                <div class="relative">
+                  <span
+                    class="absolute left-4 top-3.5 text-slate-400 font-bold text-sm"
+                    >₦</span
+                  >
+                  <input
+                    type="number"
+                    id="newBalance"
+                    placeholder="0.00"
+                    class="w-full p-3 pl-11 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition font-medium"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-3 mt-8">
+              <button
+                onclick="closeModal('addModal')"
+                class="flex-1 px-4 py-3.5 text-slate-500 font-semibold rounded-xl hover:bg-slate-50 transition btn-press"
+              >
+                Cancel
+              </button>
+              <button
+                onclick="addCustomer()"
+                class="flex-1 px-4 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-xl hover:from-blue-500 hover:to-blue-600 transition shadow-lg shadow-blue-200 btn-press flex items-center justify-center gap-2"
+              >
+                <i class="fas fa-check"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSACTION MODAL -->
+    <div
+      id="transactionModal"
+      class="fixed inset-0 z-[100] hidden modal-overlay bottom-sheet-overlay"
+    >
+      <div
+        class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
+        onclick="closeModal('transactionModal')"
+      ></div>
+      <div
+        class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none"
+      >
+        <div
+          class="bg-white rounded-2xl shadow-2xl w-full max-w-md pointer-events-auto modal-panel bottom-sheet"
+        >
+          <div class="p-6">
+            <!-- Drag handle for mobile -->
+            <div
+              class="sm:hidden w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4"
+            ></div>
+
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div
+                  id="transIcon"
+                  class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+                >
+                  <i id="transIconInner" class="fas text-lg"></i>
+                </div>
+                <div>
+                  <h3 id="transTitle" class="text-lg font-bold text-slate-800">
+                    Transaction
+                  </h3>
+                  <p
+                    id="transCustomerName"
+                    class="text-xs text-slate-400 font-medium"
+                  ></p>
+                </div>
+              </div>
+              <button
+                onclick="closeModal('transactionModal')"
+                class="w-10 h-10 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-400 transition btn-press"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label
+                  id="transLabel"
+                  class="block text-xs font-bold uppercase tracking-wider mb-2"
+                  >Amount (₦)</label
+                >
+                <div class="relative">
+                  <span
+                    class="absolute left-4 top-3.5 text-slate-400 font-bold text-lg"
+                    >₦</span
+                  >
+                  <input
+                    type="number"
+                    id="transAmount"
+                    placeholder="0.00"
+                    class="w-full p-4 pl-11 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-xl font-bold text-slate-800"
+                  />
+                </div>
+              </div>
+
+              <div
+                id="transWarning"
+                class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3"
+              >
+                <div
+                  class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0"
+                >
+                  <i
+                    class="fas fa-exclamation-triangle text-amber-600 text-sm"
+                  ></i>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-amber-800">
+                    Withdrawal Notice
+                  </p>
+                  <p class="text-xs text-amber-600 mt-0.5">
+                    This will reduce the customer's available balance.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <input type="hidden" id="transCustomerId" />
+            <input type="hidden" id="transType" />
+
+            <div class="flex gap-3 mt-8">
+              <button
+                onclick="closeModal('transactionModal')"
+                class="flex-1 px-4 py-3.5 text-slate-500 font-semibold rounded-xl hover:bg-slate-50 transition btn-press"
+              >
+                Cancel
+              </button>
+              <button
+                id="transBtn"
+                onclick="processTransaction()"
+                class="flex-1 px-4 py-3.5 text-white font-bold rounded-xl transition shadow-lg btn-press flex items-center justify-center gap-2"
+              >
+                <i class="fas fa-check"></i> Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div id="deleteModal" class="fixed inset-0 z-[100] hidden modal-overlay">
+      <div
+        class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
+        onclick="closeModal('deleteModal')"
+      ></div>
+      <div
+        class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none"
+      >
+        <div
+          class="bg-white rounded-2xl shadow-2xl w-full max-w-sm pointer-events-auto modal-panel p-6 text-center"
+        >
+          <div
+            class="w-16 h-16 rounded-2xl bg-rose-50 flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-trash-alt text-2xl text-rose-500"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800 mb-2">
+            Delete Customer?
+          </h3>
+          <p class="text-sm text-slate-500 mb-6">
+            This action cannot be undone. All transaction history will be
+            permanently removed.
+          </p>
+          <input type="hidden" id="deleteCustomerId" />
+          <div class="flex gap-3">
+            <button
+              onclick="closeModal('deleteModal')"
+              class="flex-1 px-4 py-3 text-slate-500 font-semibold rounded-xl hover:bg-slate-50 transition btn-press"
+            >
+              Cancel
+            </button>
+            <button
+              onclick="confirmDelete()"
+              class="flex-1 px-4 py-3 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-500 transition shadow-lg shadow-rose-200 btn-press"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
